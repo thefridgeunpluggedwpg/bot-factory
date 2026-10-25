@@ -1,4 +1,4 @@
-// MoneyLine Bot Factory — ALL data lives here. Revenue = real figures only.
+// MoneyLine Bot Factory — FALLBACK data only (used if status.json can't load). Live data: /status.json. Real figures only.
 window.MONEYLINE = {
   revenue: { currency: 'CAD', lifetime: 20, month: 'Oct 2026', monthToDate: 0, goalMonthly: 10000,
     milestone: 'Cover monthly bills', perBot: '$0 / not yet tracked',
@@ -25,8 +25,5 @@ window.MONEYLINE = {
     { id:'movie', name:'Movie Night', tier:'small', role:'Movie picks', status:'Idle', next:'—' },
     { id:'mileage', name:'Mileage Calculator', tier:'small', role:'Mileage', status:'Idle', next:'—' },
     { id:'pep', name:'Pep Talk', tier:'small', role:'Pep talks', status:'Idle', next:'—' }
-  ],
-  // SIMULATED activity only (decorative, not real events)
-  ticker: ['Grok Bot → Jarvis: route check','Jarvis → Deadly Decks: lead search','MoneyLine: revenue sync','Grok Bot → Website Builder: ping','Jarvis → Halo: still blocked','Flower Boxes → MoneyLine: status'],
-  sim: ['Reading brief','Planning','Writing draft','Searching','Checking queue','Syncing']
+  ]
 };

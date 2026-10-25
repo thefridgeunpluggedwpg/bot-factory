@@ -1,0 +1,169 @@
+{
+ "updatedAt": null,
+ "money": {
+  "currency": "CAD",
+  "lifetimeCAD": 20,
+  "month": "2026-10",
+  "monthLabel": "Oct 2026",
+  "monthCAD": 0,
+  "goalMonthlyCAD": 10000,
+  "milestones": [
+   {
+    "name": "Cover monthly bills",
+    "amountCAD": null,
+    "reached": false
+   }
+  ],
+  "note": "Lifetime $20 = 2 Johnny videos (Sep 2026). Source: tracker.csv"
+ },
+ "bots": [
+  {
+   "id": "moneyline",
+   "name": "MoneyLine",
+   "status": "Online",
+   "lastActive": null,
+   "currentTask": "Log first October sale"
+  },
+  {
+   "id": "grok",
+   "name": "Grok Bot",
+   "status": "Online",
+   "lastActive": null,
+   "currentTask": "Route new requests"
+  },
+  {
+   "id": "jarvis",
+   "name": "Jarvis",
+   "status": "Online",
+   "lastActive": null,
+   "currentTask": "Check bot health"
+  },
+  {
+   "id": "decks",
+   "name": "Deadly Decks",
+   "status": "Spring offer ready (0 leads)",
+   "lastActive": null,
+   "currentTask": "Get first leads"
+  },
+  {
+   "id": "halo",
+   "name": "Halo Studio Setter",
+   "status": "BLOCKED — waiting on Darren account auth",
+   "lastActive": null,
+   "currentTask": "Darren grants access"
+  },
+  {
+   "id": "story",
+   "name": "Storyboard",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Await brief"
+  },
+  {
+   "id": "pi",
+   "name": "Private Eye",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Await case"
+  },
+  {
+   "id": "pibc",
+   "name": "Private Eye BC",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Await case"
+  },
+  {
+   "id": "flowers",
+   "name": "Flower Boxes",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Plan next listing"
+  },
+  {
+   "id": "bottle",
+   "name": "Bottle Shop",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Plan next listing"
+  },
+  {
+   "id": "fiverr",
+   "name": "Fiverr Fulfillment",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Wait for order"
+  },
+  {
+   "id": "web",
+   "name": "Website Builder",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "Await client"
+  },
+  {
+   "id": "song",
+   "name": "Song Generator",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "soft",
+   "name": "Software Builder",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "mcp",
+   "name": "Model MCP",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "mkt",
+   "name": "Marketing Campaign",
+   "status": "PAUSED",
+   "lastActive": null,
+   "currentTask": "Resume when ready"
+  },
+  {
+   "id": "game",
+   "name": "Game Guide",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "karaoke",
+   "name": "Karaoke Bot",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "movie",
+   "name": "Movie Night",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "mileage",
+   "name": "Mileage Calculator",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  },
+  {
+   "id": "pep",
+   "name": "Pep Talk",
+   "status": "Idle",
+   "lastActive": null,
+   "currentTask": "—"
+  }
+ ],
+ "events": []
+}
