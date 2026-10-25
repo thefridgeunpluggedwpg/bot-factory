@@ -1,0 +1,5 @@
+MoneyLine Bot Factory — re-skin of Pixel Agents
+Engine, UI and all pixel art (characters, furniture, floors, walls, pets): Pixel Agents
+https://github.com/pablodelucca/pixel-agents — MIT License (see LICENSE-pixel-agents.txt).
+Modifications: MoneyLine overlay (moneyline/*), browser demo mode enabled for static hosting.
+Revenue panel: real figures only. Character activity and ticker are SIMULATED.
