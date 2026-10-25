@@ -1,5 +1,5 @@
 {
- "updatedAt": null,
+ "updatedAt": "2026-10-25T12:14:57Z",
  "money": {
   "currency": "CAD",
   "lifetimeCAD": 20,
@@ -21,7 +21,7 @@
    "id": "moneyline",
    "name": "MoneyLine",
    "status": "Online",
-   "lastActive": null,
+   "lastActive": "2026-10-25T12:14:57Z",
    "currentTask": "Log first October sale"
   },
   {
@@ -165,5 +165,12 @@
    "currentTask": "—"
   }
  ],
- "events": []
+ "events": [
+  {
+   "ts": "2026-10-25T12:14:57Z",
+   "bot": "MoneyLine",
+   "text": "Live status feed turned on",
+   "type": "info"
+  }
+ ]
 }
