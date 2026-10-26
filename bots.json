@@ -1,5 +1,5 @@
 {
- "$comment": "Your bots. Add one by copying a block. id: short unique word; tier: hq|core|main|small; link: optional URL. No secrets here — this file is public.",
+ "$comment": "Your bots. Add one by copying a block. id: short unique word; tier: hq|core|main|small; department: Front Desk|Strategy|Build|Media|Marketing|Fulfillment|Business Lines|Partners (blank = Other); link: optional URL. No secrets here — this file is public.",
  "title": "Bot Factory",
  "bots": [
   {
@@ -7,119 +7,176 @@
    "name": "HQ",
    "tier": "hq",
    "role": "Hub — tracks goals and status",
-   "link": ""
+   "link": "",
+   "department": "Strategy"
   },
   {
    "id": "grok",
-   "name": "Grok Bot",
+   "name": "Grok Bot · Front Desk",
    "tier": "core",
    "role": "Router — sends work to the right bot",
-   "link": ""
+   "link": "",
+   "department": "Front Desk"
   },
   {
    "id": "jarvis",
-   "name": "Jarvis",
+   "name": "Jarvis · Build Lead (Games)",
    "tier": "core",
    "role": "Manages the bots",
-   "link": ""
+   "link": "",
+   "department": "Build"
   },
   {
    "id": "muse",
    "name": "Muse",
    "tier": "core",
    "role": "Creative partner bot (external)",
-   "link": ""
+   "link": "",
+   "department": "Partners"
   },
   {
    "id": "astra",
    "name": "ChatGPT-Astra",
    "tier": "core",
    "role": "Assistant bot (external)",
-   "link": ""
+   "link": "",
+   "department": "Partners"
   },
   {
    "id": "decks",
-   "name": "Deadly Decks",
+   "name": "Deadly Decks · Fence & Deck Line",
    "tier": "main",
    "role": "Deck offers",
-   "link": ""
+   "link": "",
+   "department": "Business Lines"
   },
   {
    "id": "setter",
-   "name": "Appointment Setter",
+   "name": "Appointment Setter · Appointments",
    "tier": "main",
-   "role": "Appointment setting",
-   "link": ""
+   "role": "Appointments (Paused)",
+   "link": "",
+   "department": "Business Lines"
   },
   {
    "id": "story",
    "name": "Storyboard",
    "tier": "main",
    "role": "Storyboards",
-   "link": ""
+   "link": "",
+   "department": "Media"
   },
   {
    "id": "research",
    "name": "Research",
    "tier": "main",
    "role": "Research",
-   "link": ""
+   "link": "",
+   "department": "Strategy"
   },
   {
    "id": "flowers",
-   "name": "Flower Boxes",
+   "name": "Flower Boxes · Planter Brand Line",
    "tier": "main",
    "role": "Flower box shop",
-   "link": ""
+   "link": "",
+   "department": "Business Lines"
   },
   {
    "id": "bottle",
-   "name": "Bottle Shop",
+   "name": "Bottle Shop · Custom Label Line",
    "tier": "main",
    "role": "Bottle shop",
-   "link": ""
+   "link": "",
+   "department": "Business Lines"
   },
   {
    "id": "fiverr",
-   "name": "Fiverr Fulfillment",
+   "name": "Fulfillment · Fiverr & Orders",
    "tier": "main",
    "role": "Fulfils Fiverr orders",
-   "link": ""
+   "link": "",
+   "department": "Fulfillment"
   },
   {
    "id": "web",
-   "name": "Website Builder",
+   "name": "Website Builder · Websites",
    "tier": "main",
    "role": "Builds websites",
-   "link": ""
+   "link": "",
+   "department": "Build"
   },
   {
    "id": "song",
-   "name": "Song Generator",
+   "name": "Music Studio · Songs",
    "tier": "small",
    "role": "Songs",
-   "link": ""
+   "link": "",
+   "department": "Media"
   },
   {
    "id": "soft",
-   "name": "Software Builder",
+   "name": "Software Builder · Apps & Bot Factory",
    "tier": "small",
    "role": "Software",
-   "link": ""
+   "link": "",
+   "department": "Build"
   },
   {
    "id": "mcp",
    "name": "Model MCP",
    "tier": "small",
    "role": "MCP tooling",
-   "link": ""
+   "link": "",
+   "department": "Build"
+  },
+  {
+   "id": "moneyline",
+   "name": "MoneyLine · Chief of Staff",
+   "tier": "core",
+   "role": "Plans, weekly review, money tracking",
+   "link": "",
+   "department": "Strategy"
+  },
+  {
+   "id": "asset",
+   "name": "Asset Studio · 3D & Game Art",
+   "tier": "main",
+   "role": "3D models, sprites, game art",
+   "link": "",
+   "department": "Build"
+  },
+  {
+   "id": "video",
+   "name": "Video Studio · Media Lead",
+   "tier": "main",
+   "role": "Video and storyboards",
+   "link": "",
+   "department": "Media"
+  },
+  {
+   "id": "leads",
+   "name": "Leads Line (Winnipeg)",
+   "tier": "main",
+   "role": "Leads line",
+   "link": "",
+   "department": "Business Lines"
+  },
+  {
+   "id": "leadsbc",
+   "name": "Leads Line (BC)",
+   "tier": "main",
+   "role": "Leads line",
+   "link": "",
+   "department": "Business Lines"
   },
   {
    "id": "mkt",
-   "name": "Marketing Campaign",
+   "name": "Marketing Lead · Campaigns",
    "tier": "small",
-   "role": "Marketing",
-   "link": ""
+   "role": "Campaign plans and copy for every business line",
+   "link": "",
+   "department": "Marketing"
   },
   {
    "id": "game",

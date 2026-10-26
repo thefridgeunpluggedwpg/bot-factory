@@ -16,7 +16,7 @@
       '<div class="ml-upd'+(stale?' stale':'')+'">'+(!S||S._fallback?'Live status unavailable':'Last updated: '+when(S.updatedAt))+(stale&&S&&!S._fallback?' · ⚠ offline/stale, retrying':'')+'</div>';
     var ev=((S&&S.events)||[]).slice(-100).reverse();
     feed.innerHTML='<em>LIVE FEED</em><div class="ml-tt">'+(ev.length?ev.map(function(e){return '<span class="ml-ev">'+when(e.ts)+' · <b>'+esc(e.bot||'')+'</b> '+esc(e.text||'')+'</span>'}).join(''):'<span class="ml-ev">No events yet</span>')+'</div>';
-    list.querySelectorAll('.ml-chip').forEach(function(c,i){var b=D.bots[i],k=kind(bot(b).status);c.className='ml-chip '+(b.tier||'small')+(k=='bad'?' blocked':k=='warn'?' paused':'')});
+    list.querySelectorAll('.ml-chip').forEach(function(c){var b=D.bots[+c.dataset.i],k=kind(bot(b).status);c.className='ml-chip '+(b.tier||'small')+(k=='bad'?' blocked':k=='warn'?' paused':'')});
     if(sel)show(sel);
   }
   function show(b){sel=b;var s=bot(b),st=s.status||'Unknown';
@@ -33,7 +33,11 @@
       .catch(function(){stale=true;if(!S)S={_fallback:true,bots:[],events:[]};render()});
   }
   window.__bfReload=load;
-  function chips(){list.innerHTML='';D.bots.forEach(function(b,i){var c=el('button','ml-chip '+(b.tier||'small'),esc(b.name));c.onclick=function(){show(b);send({type:'agentSelected',id:i+1})};list.appendChild(c)})}
+  var DEPTS=['Front Desk','Strategy','Build','Media','Marketing','Fulfillment','Business Lines','Partners'];
+  function chips(){list.innerHTML='';var g={};D.bots.forEach(function(b,i){var d=DEPTS.indexOf(b.department)<0?'Other':b.department;(g[d]=g[d]||[]).push(i)});
+    DEPTS.concat('Other').forEach(function(d){if(!g[d])return;var sec=el('div','ml-dept');sec.appendChild(el('div','ml-dh',esc(d)));var row=el('div','ml-dr');
+      g[d].forEach(function(i){var b=D.bots[i],c=el('button','ml-chip '+(b.tier||'small'),esc(b.name));c.dataset.i=i;c.onclick=function(){show(b);send({type:'agentSelected',id:i+1})};row.appendChild(c)});
+      sec.appendChild(row);list.appendChild(sec)})}
   function boot(){
     top=el('div','ml-top');document.body.appendChild(top);
     feed=el('div','ml-tick');document.body.appendChild(feed);
