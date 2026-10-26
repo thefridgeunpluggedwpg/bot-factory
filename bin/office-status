@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+"""office-status: update status.json of a Bot Factory office (public repo!) via `gh api`.
+Usage:
+  office-status event --bot NAME --text TEXT [--type info|win|blocked|status]
+  office-status bot   --bot NAME|ID [--status STATUS] [--task TEXT] [--event TEXT]
+  office-status show
+Options: --repo OWNER/REPO (default $BOT_FACTORY_REPO or thefridgeunpluggedwpg/bot-factory), --branch main,
+         --dry-run, --local FILE (edit a local file instead of GitHub; for testing)
+"""
+import argparse, base64, json, os, re, subprocess, sys, time, datetime
+REPO=os.environ.get('BOT_FACTORY_REPO','thefridgeunpluggedwpg/bot-factory'); PATH='status.json'; MAX_EVENTS=100
+SECRET=[(r'gh[pousr]_[A-Za-z0-9]{20,}|github_pat_\w{20,}','GitHub token'),(r'sk-[A-Za-z0-9_-]{16,}|xai-[A-Za-z0-9]{16,}','API key'),
+ (r'AKIA[0-9A-Z]{16}','AWS key'),(r'-----BEGIN [A-Z ]*PRIVATE KEY','private key'),(r'xox[abprs]-[A-Za-z0-9-]{10,}','Slack token'),
+ (r'eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}','JWT'),(r'[\w.+-]+@[\w-]+\.[\w.-]+','email address'),
+ (r'(?<!\d)(\+?\d[\d\s().-]{8,}\d)(?!\d)','phone-like number'),(r'(?i)\b(password|passwd|secret|token|api[_ -]?key|pairing code|otp|pin)\b\s*[:=]?\s*\S+','credential keyword'),
+ (r'\b[A-Za-z0-9_\-]{32,}\b','long random-looking string'),(r'\b\d{6}\b','6-digit code (OTP/pairing?)')]
+def die(m): print('office-status: '+m,file=sys.stderr); sys.exit(2)
+def check(label,v):
+    if v is None: return
+    if len(v)>200: die(f'{label} too long (max 200 chars)')
+    for rx,what in SECRET:
+        if re.search(rx,v): die(f'REFUSED: {label} looks like it contains a {what}. The repo is PUBLIC — no secrets, emails, phone numbers, codes or private client details.')
+def now(): return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
+def gh(args,inp=None):
+    p=subprocess.run(['gh','api',*args],input=inp,capture_output=True,text=True)
+    return p.returncode,p.stdout,p.stderr
+def get(a):
+    if a.local: return json.load(open(a.local)),None
+    rc,o,e=gh([f'repos/{a.repo}/contents/{PATH}?ref={a.branch}'])
+    if rc: die('GET failed: '+e.strip())
+    j=json.loads(o); return json.loads(base64.b64decode(j['content'])),j['sha']
+def put(a,data,sha,msg):
+    body=json.dumps(data,indent=1,ensure_ascii=False)+'\n'
+    if a.dry_run: print(body); return True
+    if a.local: open(a.local,'w').write(body); return True
+    req=json.dumps({'message':msg,'content':base64.b64encode(body.encode()).decode(),'sha':sha,'branch':a.branch})
+    rc,o,e=gh(['-X','PUT',f'repos/{a.repo}/contents/{PATH}','--input','-'],req)
+    if rc==0: print('ok:',json.loads(o)['commit']['html_url']); return True
+    if '409' in e or 'does not match' in e or '422' in e: return False
+    die('PUT failed: '+e.strip())
+def find_bot(s,key):
+    k=key.lower()
+    for b in s['bots']:
+        if b['id'].lower()==k or b['name'].lower()==k: return b
+    # not in status.json yet (e.g. just added to bots.json): add it
+    b={'id':re.sub(r'[^a-z0-9]+','-',k).strip('-') or 'bot','name':key,'status':'Idle','lastActive':None,'currentTask':None}
+    s['bots'].append(b); return b
+def apply(a,s):
+    t=now(); s.setdefault('events',[])
+    def ev(bot,text,typ='info'):
+        s['events'].append({'ts':t,'bot':bot,'text':text,'type':typ}); s['events']=s['events'][-MAX_EVENTS:]
+    if a.cmd=='event':
+        name=a.bot
+        for b in s['bots']:
+            if b['id'].lower()==a.bot.lower() or b['name'].lower()==a.bot.lower(): name=b['name']; b['lastActive']=t
+        ev(name,a.text,a.type); msg=f'status: {name} event'
+    elif a.cmd=='bot':
+        b=find_bot(s,a.bot)
+        if a.status is None and a.task is None and a.event is None: die('nothing to change')
+        if a.status is not None: b['status']=a.status
+        if a.task is not None: b['currentTask']=a.task
+        b['lastActive']=t
+        if a.event: ev(b['name'],a.event,'info')
+        elif a.status is not None: ev(b['name'],'Status → '+a.status+(f' ({a.task})' if a.task else ''),'status')
+        msg=f"status: {b['name']} update"
+    s['updatedAt']=t; return msg
+def main():
+    p=argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument('--repo',default=REPO); p.add_argument('--branch',default='main'); p.add_argument('--dry-run',action='store_true'); p.add_argument('--local')
+    sp=p.add_subparsers(dest='cmd',required=True)
+    e=sp.add_parser('event'); e.add_argument('--bot',required=True); e.add_argument('--text',required=True); e.add_argument('--type',default='info',choices=['info','win','blocked','status'])
+    b=sp.add_parser('bot'); b.add_argument('--bot',required=True); b.add_argument('--status'); b.add_argument('--task'); b.add_argument('--event')
+    sp.add_parser('show')
+    a=p.parse_args()
+    for k in ('bot','text','status','task','event'): check('--'+k,getattr(a,k,None))
+    for i in range(5):
+        s,sha=get(a)
+        if a.cmd=='show': print(json.dumps(s,indent=1,ensure_ascii=False)); return
+        msg=apply(a,s)
+        if put(a,s,sha,msg): return
+        print(f'sha conflict, retrying ({i+1}/5)…',file=sys.stderr); time.sleep(1+i)
+    die('gave up after 5 conflicts')
+main()

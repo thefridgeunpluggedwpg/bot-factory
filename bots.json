@@ -1,0 +1,160 @@
+{
+ "$comment": "Your bots. Add one by copying a block. id: short unique word; tier: hq|core|main|small; link: optional URL. No secrets here — this file is public.",
+ "title": "Bot Factory",
+ "bots": [
+  {
+   "id": "hq",
+   "name": "HQ",
+   "tier": "hq",
+   "role": "Hub — tracks goals and status",
+   "link": ""
+  },
+  {
+   "id": "grok",
+   "name": "Grok Bot",
+   "tier": "core",
+   "role": "Router — sends work to the right bot",
+   "link": ""
+  },
+  {
+   "id": "jarvis",
+   "name": "Jarvis",
+   "tier": "core",
+   "role": "Manages the bots",
+   "link": ""
+  },
+  {
+   "id": "muse",
+   "name": "Muse",
+   "tier": "core",
+   "role": "Creative partner bot (external)",
+   "link": ""
+  },
+  {
+   "id": "astra",
+   "name": "ChatGPT-Astra",
+   "tier": "core",
+   "role": "Assistant bot (external)",
+   "link": ""
+  },
+  {
+   "id": "decks",
+   "name": "Deadly Decks",
+   "tier": "main",
+   "role": "Deck offers",
+   "link": ""
+  },
+  {
+   "id": "setter",
+   "name": "Appointment Setter",
+   "tier": "main",
+   "role": "Appointment setting",
+   "link": ""
+  },
+  {
+   "id": "story",
+   "name": "Storyboard",
+   "tier": "main",
+   "role": "Storyboards",
+   "link": ""
+  },
+  {
+   "id": "research",
+   "name": "Research",
+   "tier": "main",
+   "role": "Research",
+   "link": ""
+  },
+  {
+   "id": "flowers",
+   "name": "Flower Boxes",
+   "tier": "main",
+   "role": "Flower box shop",
+   "link": ""
+  },
+  {
+   "id": "bottle",
+   "name": "Bottle Shop",
+   "tier": "main",
+   "role": "Bottle shop",
+   "link": ""
+  },
+  {
+   "id": "fiverr",
+   "name": "Fiverr Fulfillment",
+   "tier": "main",
+   "role": "Fulfils Fiverr orders",
+   "link": ""
+  },
+  {
+   "id": "web",
+   "name": "Website Builder",
+   "tier": "main",
+   "role": "Builds websites",
+   "link": ""
+  },
+  {
+   "id": "song",
+   "name": "Song Generator",
+   "tier": "small",
+   "role": "Songs",
+   "link": ""
+  },
+  {
+   "id": "soft",
+   "name": "Software Builder",
+   "tier": "small",
+   "role": "Software",
+   "link": ""
+  },
+  {
+   "id": "mcp",
+   "name": "Model MCP",
+   "tier": "small",
+   "role": "MCP tooling",
+   "link": ""
+  },
+  {
+   "id": "mkt",
+   "name": "Marketing Campaign",
+   "tier": "small",
+   "role": "Marketing",
+   "link": ""
+  },
+  {
+   "id": "game",
+   "name": "Game Guide",
+   "tier": "small",
+   "role": "Game guides",
+   "link": ""
+  },
+  {
+   "id": "karaoke",
+   "name": "Karaoke Bot",
+   "tier": "small",
+   "role": "Karaoke",
+   "link": ""
+  },
+  {
+   "id": "movie",
+   "name": "Movie Night",
+   "tier": "small",
+   "role": "Movie picks",
+   "link": ""
+  },
+  {
+   "id": "mileage",
+   "name": "Mileage Calculator",
+   "tier": "small",
+   "role": "Mileage",
+   "link": ""
+  },
+  {
+   "id": "pep",
+   "name": "Pep Talk",
+   "tier": "small",
+   "role": "Pep talks",
+   "link": ""
+  }
+ ]
+}

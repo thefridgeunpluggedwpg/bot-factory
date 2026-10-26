@@ -1,5 +1,5 @@
-MoneyLine Bot Factory — re-skin of Pixel Agents
+Bot Factory — open-source virtual office for your AI bots (MIT, see LICENSE).
 Engine, UI and all pixel art (characters, furniture, floors, walls, pets): Pixel Agents
 https://github.com/pablodelucca/pixel-agents — MIT License (see LICENSE-pixel-agents.txt).
-Modifications: MoneyLine overlay (moneyline/*), browser demo mode enabled for static hosting.
-Revenue panel: real figures only. Character activity and ticker are SIMULATED.
+Modifications: Bot Factory overlay (factory/*), bots.json roster, browser demo mode enabled for static hosting.
+Character movement is decorative; statuses and the feed come from status.json.

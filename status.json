@@ -1,28 +1,12 @@
 {
- "updatedAt": "2026-10-25T12:14:57Z",
- "money": {
-  "currency": "CAD",
-  "lifetimeCAD": 20,
-  "month": "2026-10",
-  "monthLabel": "Oct 2026",
-  "monthCAD": 0,
-  "goalMonthlyCAD": 10000,
-  "milestones": [
-   {
-    "name": "Cover monthly bills",
-    "amountCAD": null,
-    "reached": false
-   }
-  ],
-  "note": "Lifetime $20 = 2 Johnny videos (Sep 2026). Source: tracker.csv"
- },
+ "updatedAt": "2026-10-26T19:03:51Z",
  "bots": [
   {
-   "id": "moneyline",
-   "name": "MoneyLine",
+   "id": "hq",
+   "name": "HQ",
    "status": "Online",
-   "lastActive": "2026-10-25T12:14:57Z",
-   "currentTask": "Log first October sale"
+   "lastActive": null,
+   "currentTask": "Post daily summary"
   },
   {
    "id": "grok",
@@ -39,18 +23,32 @@
    "currentTask": "Check bot health"
   },
   {
+   "id": "muse",
+   "name": "Muse",
+   "status": "Not connected yet",
+   "lastActive": null,
+   "currentTask": "Connect via messages/inbox"
+  },
+  {
+   "id": "astra",
+   "name": "ChatGPT-Astra",
+   "status": "Not connected yet",
+   "lastActive": null,
+   "currentTask": "Connect via messages/inbox"
+  },
+  {
    "id": "decks",
    "name": "Deadly Decks",
-   "status": "Spring offer ready (0 leads)",
+   "status": "Idle",
    "lastActive": null,
    "currentTask": "Get first leads"
   },
   {
-   "id": "halo",
-   "name": "Halo Studio Setter",
-   "status": "BLOCKED — waiting on Darren account auth",
+   "id": "setter",
+   "name": "Appointment Setter",
+   "status": "BLOCKED — waiting on account access",
    "lastActive": null,
-   "currentTask": "Darren grants access"
+   "currentTask": "Get account access"
   },
   {
    "id": "story",
@@ -60,18 +58,11 @@
    "currentTask": "Await brief"
   },
   {
-   "id": "pi",
-   "name": "Private Eye",
+   "id": "research",
+   "name": "Research",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "Await case"
-  },
-  {
-   "id": "pibc",
-   "name": "Private Eye BC",
-   "status": "Idle",
-   "lastActive": null,
-   "currentTask": "Await case"
+   "currentTask": "Await task"
   },
   {
    "id": "flowers",
@@ -99,28 +90,28 @@
    "name": "Website Builder",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "Await client"
+   "currentTask": "Await request"
   },
   {
    "id": "song",
    "name": "Song Generator",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "soft",
    "name": "Software Builder",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "mcp",
    "name": "Model MCP",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "mkt",
@@ -134,42 +125,42 @@
    "name": "Game Guide",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "karaoke",
    "name": "Karaoke Bot",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "movie",
    "name": "Movie Night",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "mileage",
    "name": "Mileage Calculator",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   },
   {
    "id": "pep",
    "name": "Pep Talk",
    "status": "Idle",
    "lastActive": null,
-   "currentTask": "—"
+   "currentTask": null
   }
  ],
  "events": [
   {
-   "ts": "2026-10-25T12:14:57Z",
-   "bot": "MoneyLine",
-   "text": "Live status feed turned on",
+   "ts": "2026-10-26T19:03:51Z",
+   "bot": "HQ",
+   "text": "Renamed to Bot Factory; personal data removed; bots.json + messages inbox added",
    "type": "info"
   }
  ]
