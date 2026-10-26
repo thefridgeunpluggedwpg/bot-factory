@@ -60,9 +60,9 @@
   },
   {
    "id": "story",
-   "name": "Storyboard",
+   "name": "Video Studio · Media Lead",
    "tier": "main",
-   "role": "Storyboards",
+   "role": "Video, storyboards",
    "link": "",
    "department": "Media"
   },
@@ -124,9 +124,9 @@
   },
   {
    "id": "mcp",
-   "name": "Model MCP",
+   "name": "Asset Studio · 3D & Game Art",
    "tier": "small",
-   "role": "MCP tooling",
+   "role": "3D models and game art",
    "link": "",
    "department": "Build"
   },
@@ -137,22 +137,6 @@
    "role": "Plans, weekly review, money tracking",
    "link": "",
    "department": "Strategy"
-  },
-  {
-   "id": "asset",
-   "name": "Asset Studio · 3D & Game Art",
-   "tier": "main",
-   "role": "3D models, sprites, game art",
-   "link": "",
-   "department": "Build"
-  },
-  {
-   "id": "video",
-   "name": "Video Studio · Media Lead",
-   "tier": "main",
-   "role": "Video and storyboards",
-   "link": "",
-   "department": "Media"
   },
   {
    "id": "leads",
@@ -177,41 +161,6 @@
    "role": "Campaign plans and copy for every business line",
    "link": "",
    "department": "Marketing"
-  },
-  {
-   "id": "game",
-   "name": "Game Guide",
-   "tier": "small",
-   "role": "Game guides",
-   "link": ""
-  },
-  {
-   "id": "karaoke",
-   "name": "Karaoke Bot",
-   "tier": "small",
-   "role": "Karaoke",
-   "link": ""
-  },
-  {
-   "id": "movie",
-   "name": "Movie Night",
-   "tier": "small",
-   "role": "Movie picks",
-   "link": ""
-  },
-  {
-   "id": "mileage",
-   "name": "Mileage Calculator",
-   "tier": "small",
-   "role": "Mileage",
-   "link": ""
-  },
-  {
-   "id": "pep",
-   "name": "Pep Talk",
-   "tier": "small",
-   "role": "Pep talks",
-   "link": ""
   }
  ]
 }

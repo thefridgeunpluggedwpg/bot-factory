@@ -10,14 +10,14 @@
   },
   {
    "id": "grok",
-   "name": "Grok Bot",
+   "name": "Grok Bot · Front Desk",
    "status": "Online",
    "lastActive": null,
    "currentTask": "Route new requests"
   },
   {
    "id": "jarvis",
-   "name": "Jarvis",
+   "name": "Jarvis · Build Lead (Games)",
    "status": "Online",
    "lastActive": null,
    "currentTask": "Check bot health"
@@ -38,21 +38,21 @@
   },
   {
    "id": "decks",
-   "name": "Deadly Decks",
+   "name": "Deadly Decks · Fence & Deck Line",
    "status": "Idle",
    "lastActive": null,
    "currentTask": "Get first leads"
   },
   {
    "id": "setter",
-   "name": "Appointment Setter",
+   "name": "Appointment Setter · Appointments",
    "status": "BLOCKED — waiting on account access",
    "lastActive": null,
    "currentTask": "Get account access"
   },
   {
    "id": "story",
-   "name": "Storyboard",
+   "name": "Video Studio · Media Lead",
    "status": "Idle",
    "lastActive": null,
    "currentTask": "Await brief"
@@ -66,94 +66,59 @@
   },
   {
    "id": "flowers",
-   "name": "Flower Boxes",
+   "name": "Flower Boxes · Planter Brand Line",
    "status": "Idle",
    "lastActive": null,
    "currentTask": "Plan next listing"
   },
   {
    "id": "bottle",
-   "name": "Bottle Shop",
+   "name": "Bottle Shop · Custom Label Line",
    "status": "Idle",
    "lastActive": null,
    "currentTask": "Plan next listing"
   },
   {
    "id": "fiverr",
-   "name": "Fiverr Fulfillment",
+   "name": "Fulfillment · Fiverr & Orders",
    "status": "Idle",
    "lastActive": null,
    "currentTask": "Wait for order"
   },
   {
    "id": "web",
-   "name": "Website Builder",
+   "name": "Website Builder · Websites",
    "status": "Idle",
    "lastActive": null,
    "currentTask": "Await request"
   },
   {
    "id": "song",
-   "name": "Song Generator",
+   "name": "Music Studio · Songs",
    "status": "Idle",
    "lastActive": null,
    "currentTask": null
   },
   {
    "id": "soft",
-   "name": "Software Builder",
+   "name": "Software Builder · Apps & Bot Factory",
    "status": "Idle",
    "lastActive": null,
    "currentTask": null
   },
   {
    "id": "mcp",
-   "name": "Model MCP",
+   "name": "Asset Studio · 3D & Game Art",
    "status": "Idle",
    "lastActive": null,
    "currentTask": null
   },
   {
    "id": "mkt",
-   "name": "Marketing Campaign",
+   "name": "Marketing Lead · Campaigns",
    "status": "PAUSED",
    "lastActive": null,
    "currentTask": "Resume when ready"
-  },
-  {
-   "id": "game",
-   "name": "Game Guide",
-   "status": "Idle",
-   "lastActive": null,
-   "currentTask": null
-  },
-  {
-   "id": "karaoke",
-   "name": "Karaoke Bot",
-   "status": "Idle",
-   "lastActive": null,
-   "currentTask": null
-  },
-  {
-   "id": "movie",
-   "name": "Movie Night",
-   "status": "Idle",
-   "lastActive": null,
-   "currentTask": null
-  },
-  {
-   "id": "mileage",
-   "name": "Mileage Calculator",
-   "status": "Idle",
-   "lastActive": null,
-   "currentTask": null
-  },
-  {
-   "id": "pep",
-   "name": "Pep Talk",
-   "status": "Idle",
-   "lastActive": null,
-   "currentTask": null
   }
  ],
  "events": [
