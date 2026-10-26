@@ -147,14 +147,6 @@
    "department": "Business Lines"
   },
   {
-   "id": "leadsbc",
-   "name": "Leads Line (BC)",
-   "tier": "main",
-   "role": "Leads line",
-   "link": "",
-   "department": "Business Lines"
-  },
-  {
    "id": "mkt",
    "name": "Marketing Lead · Campaigns",
    "tier": "small",
