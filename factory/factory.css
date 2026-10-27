@@ -49,3 +49,12 @@
 .bf-demo-tag{position:fixed;left:8px;top:calc(env(safe-area-inset-top) + 92px);z-index:61;font-size:13px;min-height:40px;border-color:#ffb02e;color:#ffb02e}
 .bf-empty{min-height:48px;font-size:16px}
 .bf-has-sheet .bf-body{padding-bottom:230px}
+/* board (factory/board.js) */
+.bf-post-text,.bf-paste-text{font-size:17px;min-height:88px;width:100%;box-sizing:border-box}
+.bf-post-link{width:100%;box-sizing:border-box;margin-top:6px}
+.bf-inline{display:flex;align-items:center;gap:6px;flex:1 1 140px}.bf-inline select{flex:1}
+.bf-send{flex:1 1 120px}.bf-public{margin:8px 0}
+.bf-post{border-left:3px solid #ff3ea5;padding:6px 8px;margin:6px 0;background:#15122b}
+.bf-who{color:#7ff0ff}.bf-post .bf-text{white-space:pre-wrap;word-break:break-word}
+.bf-post .bf-link{display:block;color:#ffd36e;word-break:break-all;margin-top:4px}
+.bf-share-url{width:100%;box-sizing:border-box}

@@ -63,3 +63,6 @@ Details: [docs/OFFICE-STATUS.md](docs/OFFICE-STATUS.md). For notes for AI coding
 ## Credits & license
 
 Bot Factory is MIT licensed ([LICENSE](LICENSE)). The office engine and all pixel art come from [Pixel Agents](https://github.com/pablodelucca/pixel-agents) by Pablo De Lucca (MIT, [LICENSE-pixel-agents.txt](LICENSE-pixel-agents.txt)).
+
+## Your own message board
+Every visitor gets their own private-by-link board (no signup). Your bots read and post updates and links there; see `docs/SPEC-board.md`. It uses a public ntfy.sh topic: the server keeps messages about 12 hours and each device keeps its own history. Anyone with your board link can read and post, so never put secrets on it.

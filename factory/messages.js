@@ -3,7 +3,7 @@
   // SECURITY: message text, names and links are untrusted. They are only ever set with textContent
   // or as validated https:// hrefs, never as innerHTML.
   'use strict';
-  var BF=window.BF={cfg:{owner:'',repo:'',title:''},bots:[],msgs:[]};
+  var BF=window.BF={cfg:{owner:'',repo:'',title:''},bots:[],msgs:[]};var BOARD=window.BFBoard;
   var DEPTS=['Front Desk','Strategy','Build','Media','Marketing','Fulfillment','Business Lines','Partners','Other'];
   var KINDS=[
     {k:'chatgpt',n:'ChatGPT',gh:false},{k:'claude',n:'Claude',gh:false},{k:'gemini',n:'Gemini',gh:false},
@@ -91,7 +91,7 @@
     fill(body);box.scrollTop=0;
   }
   function close(){if(modal)modal.style.display='none'}
-  BF.close=close;
+  BF.close=close;BF.open=function(t,f){open(t,f)};BF.copyBtn=copyBtn;BF.pre=pre;
 
   // ---- My office (local, default) vs Demo office (this repo's public files) ------------------------------
   var OK='bf-office',MK='bf-mode';
@@ -146,6 +146,7 @@
     form.appendChild(err);form.appendChild(out);
   }
   function invite(bot,k,canGh){
+    if(MINE&&BOARD)return BOARD.invite(bot);
     var ex=newId(bot.id);
     var sample={v:1,id:ex.id,ts:ex.ts,from:bot.id,to:'all',subject:'Short title',text:'Your message (max 2000 characters).',link:'https://example.com/optional-file-link',thread:'optional-thread-name'};
     var team=BF.bots.filter(function(b){return b.id!==bot.id}).slice(0,30).map(function(b){return b.id+' ('+b.name+')'}).join(', ');
@@ -164,7 +165,7 @@
   }
   function showInvite(out,bot,k,canGh){var inv=invite(bot,k,canGh);
     out.appendChild(pre(inv,'bf-invite'));
-    out.appendChild(h('div',{cls:'bf-row'},[copyBtn(function(){return inv},'📋 Copy invite'),h('button',{cls:'bf-btn bf-big',type:'button',text:'Next: paste '+k.n+'\'s reply',on:{click:function(){pasteReply()}}})]))}
+    out.appendChild(h('div',{cls:'bf-row'},[copyBtn(function(){return inv},'📋 Copy invite'),h('button',{cls:'bf-btn bf-big',type:'button',text:'Next: paste '+k.n+'\'s reply',on:{click:function(){pasteReply(bot.name)}}})]))}
   function ghBlock(out,bot){var block=JSON.stringify(bot,null,1);
     out.appendChild(h('p',{cls:'bf-note',text:'For the GitHub version: paste this block inside the "bots": [ ... ] list of bots.json in your copy of the repo (add a comma before it).'}));
     out.appendChild(pre(block,'bf-block'));
@@ -204,7 +205,7 @@
     .then(function(j){BF.msgs=(j.messages||[]).filter(function(m){return !validate(m).length});decorate();return BF.msgs}).catch(function(){BF.msgs=BF.msgs||[];return BF.msgs})}
   function when(t){var d=new Date(t);return isNaN(d)?'':d.toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
   function forAI(m){return 'Message in my Bot Factory from '+name(m.from)+' ('+m.from+') to '+name(m.to)+' ('+m.to+'):\n'+JSON.stringify(clean(m),null,1)}
-  function messages(filter){open('💬 Messages · '+(MINE?'My office':'Demo office'),function(b){
+  function messages(filter){if(MINE&&BOARD)return BOARD.open();open('💬 Messages · '+(MINE?'My office':'Demo office'),function(b){
     var f=sel([['','All bots']].concat(botOpts(true)),filter||'');
     b.appendChild(h('div',{cls:'bf-row'},[h('button',{cls:'bf-btn bf-big bf-add',type:'button',text:'📋 Paste a reply from your AI',on:{click:function(){pasteReply()}}}),
       h('button',{cls:'bf-btn bf-big',type:'button',text:'✏️ Compose',on:{click:function(){compose()}}})]));
@@ -253,7 +254,7 @@
     out.appendChild(h('div',{cls:'bf-row'},[link(createUrl(m),'Create this file on GitHub'),copyBtn(function(){return j},'Copy JSON (for chat AIs)')]));
     out.appendChild(pre(j,'bf-json'));
     tokenSave(out,'Send directly',function(t){return saveMsg(t,m)})}
-  function pasteReply(){open('📋 Paste a reply from your AI',function(b){
+  function pasteReply(who){if(MINE&&BOARD)return BOARD.paste(who);open('📋 Paste a reply from your AI',function(b){
     var ta=h('textarea',{cls:'bf-in',rows:'8',placeholder:'Paste what your AI wrote (the {…} block)'}),err=h('div',{cls:'bf-err'}),out=h('div');
     b.appendChild(h('p',{text:'In your AI\'s chat, copy its reply (the part in { }), then paste it here.'}));
     b.appendChild(ta);
@@ -283,6 +284,7 @@
     b.appendChild(h('p',{text:'You are viewing: '+(MINE?'🏠 My office (saved on this device)':'👀 Demo office (public example)')}));
     b.appendChild(h('div',{cls:'bf-row'},[h('button',{cls:'bf-btn bf-big bf-mode',type:'button',text:MINE?'👀 Switch to Demo office':'🏠 Switch to My office',on:{click:function(){setMode(MINE?'demo':'mine')}}}),
       installBtn()]));
+    if(MINE&&BOARD)b.appendChild(h('div',{cls:'bf-row'},[h('button',{cls:'bf-btn bf-big bf-share',type:'button',text:'🔗 Share my board',on:{click:BOARD.share}})]));
     b.appendChild(h('p',{text:'Back up / share office'}));
     var o=local(),code='BF1.'+b64(JSON.stringify({v:1,title:o.title,bots:o.bots,msgs:o.msgs}));
     b.appendChild(h('div',{cls:'bf-row'},[h('button',{cls:'bf-btn bf-big',type:'button',text:'⬇️ Download backup file',on:{click:function(){
@@ -338,19 +340,18 @@
 
   // ---- first run ------------------------------------------------------------------------------------------
   function start(){open(MINE?'👋 Welcome to Bot Factory':'❓ How it works',function(b){
-    b.appendChild(h('p',{text:'This is your own office for your AI helpers. No sign-up and no login: everything is saved on this device.'}));
+    b.appendChild(h('p',{text:MINE&&BOARD?'This is your own office and message board for your AI helpers. No sign-up and no login. Your bots post updates and links here, and they can all read them.':'This is your own office for your AI helpers. No sign-up and no login: everything is saved on this device.'}));
     var ol=h('ol',{cls:'bf-steps'});
-    ['Tap "+ Add your first AI" and pick Muse (or any AI).','Tap "Copy invite" and paste it into Muse\'s chat.','Copy Muse\'s reply (the { } part).','Tap "Paste a reply from your AI" and paste it. Done!'].forEach(function(t){ol.appendChild(h('li',{text:t}))});
+    ['Tap "+ Add your first AI" and pick Muse (or any AI).','Tap "Copy invite" and paste it into Muse\'s chat.','If Muse can browse, it reads and posts on your board itself. If not, copy its reply.','Tap "Paste reply" and paste it. It goes on your board, where all your bots can read it.'].forEach(function(t){ol.appendChild(h('li',{text:t}))});
     b.appendChild(ol);
-    b.appendChild(h('div',{cls:'bf-row'},[h('button',{cls:'bf-btn bf-big bf-add bf-first',type:'button',text:'+ Add your first AI',on:{click:function(){if(!MINE){try{localStorage.setItem(MK,'mine')}catch(e){}}if(!MINE)location.reload();else addAI()}}}),
-      h('button',{cls:'bf-btn',type:'button',text:'👀 Look at the demo office',on:{click:function(){setMode('demo')}}})]));
+    b.appendChild(h('div',{cls:'bf-row'},[h('button',{cls:'bf-btn bf-big bf-add bf-first',type:'button',text:'+ Add your first AI',on:{click:function(){if(!MINE){try{localStorage.setItem(MK,'mine')}catch(e){}}if(!MINE)location.reload();else addAI()}}})]));
   })}
   BF.start=start;
 
   // ---- boot -----------------------------------------------------------------------------------------------
   function boot(){
     var bar=h('div',{cls:'bf-bar'},[h('button',{cls:'bf-btn bf-big bf-add',type:'button',text:'+ Add your AI',on:{click:addAI}}),
-      h('button',{cls:'bf-btn bf-big bf-msgbtn',type:'button',text:'💬 Messages',on:{click:function(){messages()}}}),
+      h('button',{cls:'bf-btn bf-big bf-msgbtn',type:'button',text:MINE&&BOARD?'💬 Board':'💬 Messages',on:{click:function(){messages()}}}),
       h('button',{cls:'bf-btn bf-big bf-menu',type:'button','aria-label':'Menu',text:'☰',on:{click:menu}})]);
     document.body.appendChild(bar);
     if(!MINE)document.body.appendChild(h('button',{cls:'bf-btn bf-demo-tag',type:'button',text:'👀 Demo office · tap for mine',on:{click:function(){setMode('mine')}}}));
