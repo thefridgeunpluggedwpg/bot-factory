@@ -317,7 +317,9 @@
   var UA=navigator.userAgent||'';
   function isIOS(){return /iPhone|iPad|iPod/.test(UA)||(/Macintosh/.test(UA)&&navigator.maxTouchPoints>1)}
   function inApp(){return /FBAN|FBAV|FB_IAB|Instagram|Line\/|Twitter|LinkedInApp|Snapchat|TikTok|; wv\)/.test(UA)}
-  function installKind(){if(standalone())return '';if(inApp())return 'inapp';if(deferred)return 'prompt';if(isIOS())return 'ios';return ''}
+  function isAndroid(){return /Android/i.test(UA)}
+  function isSamsung(){return /SamsungBrowser/i.test(UA)}
+  function installKind(){if(standalone())return '';if(inApp())return 'inapp';if(deferred)return 'prompt';if(isIOS())return 'ios';if(isAndroid())return 'android';return 'desktop'}
   function doInstall(){if(!deferred)return;deferred.prompt();var p=deferred.userChoice;deferred=null;closeSheet();if(p)p.then(function(c){BF.installChoice=c&&c.outcome})}
   function installBtn(){var k=installKind();
     if(k==='prompt')return h('button',{cls:'bf-btn bf-big bf-go',type:'button',text:'📲 Install Bot Factory',on:{click:doInstall}});
@@ -325,12 +327,14 @@
     return h('button',{cls:'bf-btn bf-big',type:'button',text:'📲 Install to home screen',on:{click:function(){showSheet(true)}}})}
   var sheet=null;
   function closeSheet(dismiss){document.body.classList.remove('bf-has-sheet');if(sheet){sheet.remove();sheet=null}if(dismiss)try{localStorage.setItem(IK,String(Date.now()))}catch(e){}}
-  function dismissed(){try{return Date.now()-(+localStorage.getItem(IK)||0)<7*864e5}catch(e){return false}}
+  function dismissed(){try{return Date.now()-(+localStorage.getItem(IK)||0)<864e5}catch(e){return false}}
   function showSheet(force){var k=installKind();if(!force&&(!k||dismissed()))return;if(sheet)closeSheet();
     var kids=[h('b',{text:'📲 Install Bot Factory'})];
     if(k==='prompt')kids.push(h('p',{text:'Add it to your home screen or desktop. It opens like an app and works offline.'}),h('button',{cls:'bf-btn bf-big bf-go bf-install',type:'button',text:'Install Bot Factory',on:{click:doInstall}}));
     else if(k==='ios')kids.push(h('p',{cls:'bf-ios',text:'Tap the Share button  ⬆️  at the bottom of Safari, then tap "Add to Home Screen" ➕.'}));
     else if(k==='inapp')kids.push(h('p',{cls:'bf-inapp',text:'You\'re inside another app\'s browser. Tap ⋯ or ⋮ and choose "Open in Chrome" or "Open in Safari" to install. Or copy this link: '+location.href.split('#')[0]}));
+    else if(k==='android')kids.push(h('p',{cls:'bf-android',text:isSamsung()?'Tap the ≡ menu at the bottom, then "Add page to" → "Home screen". It opens like an app.':'Tap the ⋮ menu at the top right of Chrome, then "Install app" (or "Add to Home screen"). It opens like an app.'}),h('p',{cls:'bf-note',text:'Already installed it? Open Bot Factory from your home screen instead.'}));
+    else if(k==='desktop')kids.push(h('p',{text:'Click the install icon ⊕ at the right end of the address bar, or the browser menu → "Install Bot Factory".'}));
     else if(standalone())kids.push(h('p',{text:'Already installed ✓'}));
     else kids.push(h('p',{text:'Use your browser menu (⋮ or Share) → "Install app" or "Add to Home Screen".'}));
     kids.push(h('button',{cls:'bf-btn',type:'button',text:'Not now',on:{click:function(){closeSheet(true)}}}));
@@ -361,7 +365,7 @@
         document.querySelectorAll('a.bf-repo').forEach(function(a){a.href=ghUrl()})});
     var bots=MINE?Promise.resolve(BF.bots=local().bots):fetch('./bots.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){BF.bots=(j.bots||[]).filter(function(b){return b&&typeof b.id==='string'})}).catch(function(){});
     Promise.all([cfg,bots]).then(function(){BF.booted=true;
-      showSheet(false);if(MINE&&!BF.bots.length)start();
+      if(deferred||installKind()!=='android'&&installKind()!=='desktop')showSheet(false);else setTimeout(function(){if(!sheet)showSheet(false)},2500);if(MINE&&!BF.bots.length)start();
       return loadMsgs()});
     setInterval(function(){if(!MINE)loadMsgs()},60000);
     if(/[?&#]messages\b/.test(location.search+location.hash))cfg.then(function(){messages()});

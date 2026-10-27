@@ -1,5 +1,5 @@
 // Bot Factory service worker. status.json, bots.json, config.json and messages/ are NETWORK-ONLY (never cached).
-const CACHE='bot-factory-v6';
+const CACHE='bot-factory-v7';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./manifest.json','./factory/overlay.js','./factory/factory.css','./factory/board.js','./factory/messages.js']).catch(()=>{})));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
