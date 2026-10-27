@@ -13,11 +13,12 @@
     var t=esc(D.title||'Bot Factory').split(' ');
     top.innerHTML='<div class="ml-title">'+t[0].toUpperCase()+' <span>'+t.slice(1).join(' ').toUpperCase()+'</span></div>'+
       '<div class="ml-rev"><div><b>'+n+'</b><small>Bots</small></div><div><b>'+on+'</b><small>Online / working</small></div><div><b>'+bad+'</b><small>Blocked</small></div></div>'+
-      '<div class="ml-upd'+(stale?' stale':'')+'">'+(!S||S._fallback?'Live status unavailable':'Last updated: '+when(S.updatedAt))+(stale&&S&&!S._fallback?' · ⚠ offline/stale, retrying':'')+'</div>';
-    var ev=((S&&S.events)||[]).slice(-100).reverse();
-    feed.innerHTML='<em>LIVE FEED</em><div class="ml-tt">'+(ev.length?ev.map(function(e){return '<span class="ml-ev">'+when(e.ts)+' · <b>'+esc(e.bot||'')+'</b> '+esc(e.text||'')+'</span>'}).join(''):'<span class="ml-ev">No events yet</span>')+'</div>';
-    list.querySelectorAll('.ml-chip').forEach(function(c){var b=D.bots[+c.dataset.i],k=kind(bot(b).status);c.className='ml-chip '+(b.tier||'small')+(k=='bad'?' blocked':k=='warn'?' paused':'')});
+      '<div class="ml-upd'+(stale?' stale':'')+'">'+(S&&S._local?'🏠 My office · saved on this device':!S||S._fallback?'Live status unavailable':'Last updated: '+when(S.updatedAt))+(stale&&S&&!S._fallback?' · ⚠ offline/stale, retrying':'')+'</div>';
+    var ev=((S&&S.events)||[]).slice(-100).concat(window.__bfMsgEvents||[]).sort(function(a,b){return String(a.ts||'')<String(b.ts||'')?-1:1}).slice(-100).reverse();
+    feed.innerHTML='<em>LIVE FEED</em><div class="ml-tt">'+(ev.length?ev.map(function(e){return '<span class="ml-ev">'+when(e.ts)+' · <b>'+esc(e.bot||'')+'</b> '+esc(e.text||'')+'</span>'}).join(''):'<span class="ml-ev">'+(S&&S._local?'Messages you paste in show up here':'No events yet')+'</span>')+'</div>';
+    list.querySelectorAll('.ml-chip').forEach(function(c){var b=D.bots[+c.dataset.i];if(!b)return;var k=kind(bot(b).status);c.className='ml-chip '+(b.tier||'small')+(k=='bad'?' blocked':k=='warn'?' paused':'')});
     if(sel)show(sel);
+    if(window.BF&&BF.decorate&&!window.__bfIn){window.__bfIn=1;try{BF.decorate()}finally{window.__bfIn=0}}
   }
   function show(b){sel=b;var s=bot(b),st=s.status||'Unknown';
     det.innerHTML='<b>'+esc(b.name)+'</b> <span class="ml-st '+kind(st)+'">'+esc(st)+'</span><div>Role: '+esc(b.role||'')+'</div><div>Now: '+(s.currentTask?esc(s.currentTask):NT)+'</div><div>Last active: '+when(s.lastActive)+'</div>'+(b.link&&/^https:\/\//.test(b.link)?'<div><a href="'+esc(b.link)+'" target="_blank" rel="noopener">Open</a></div>':'')}
@@ -27,14 +28,16 @@
     D.bots.forEach(function(b,i){send({type:'agentCreated',id:i+1,directoryName:b.name,palette:i%6,hueShift:(i*47)%360})});anim()}
   function anim(){if(!spawned)return;D.bots.forEach(function(b,i){var st=String(bot(b).status||'').toLowerCase();
     send({type:'agentStatus',id:i+1,status:/work|active|busy|running/.test(st)?'active':'waiting',awaitingInput:/block|pause/.test(st)})})}
+  var MINE=window.BF&&BF.mode&&BF.mode()==='mine';
   function load(){
+    if(MINE){S={_local:true,bots:[],events:[]};stale=false;render();anim();return Promise.resolve()}
     return fetch('./status.json?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw r.status;return r.json()})
       .then(function(j){S=j;stale=false;render();anim()})
       .catch(function(){stale=true;if(!S)S={_fallback:true,bots:[],events:[]};render()});
   }
-  window.__bfReload=load;
+  window.__bfReload=load;window.__bfRender=function(){if(top&&!window.__bfIn)render()};
   var DEPTS=['Front Desk','Strategy','Build','Media','Marketing','Fulfillment','Business Lines','Partners'];
-  function chips(){list.innerHTML='';var g={};D.bots.forEach(function(b,i){var d=DEPTS.indexOf(b.department)<0?'Other':b.department;(g[d]=g[d]||[]).push(i)});
+  function chips(){list.innerHTML='';window.__bfRoster=D.bots;if(!D.bots.length){var a=el('button','ml-chip core bf-empty','+ Add your first AI');a.onclick=function(){window.BF&&BF.start&&BF.start()};list.appendChild(a)}var g={};D.bots.forEach(function(b,i){var d=DEPTS.indexOf(b.department)<0?'Other':b.department;(g[d]=g[d]||[]).push(i)});
     DEPTS.concat('Other').forEach(function(d){if(!g[d])return;var sec=el('div','ml-dept');sec.appendChild(el('div','ml-dh',esc(d)));var row=el('div','ml-dr');
       g[d].forEach(function(i){var b=D.bots[i],c=el('button','ml-chip '+(b.tier||'small'),esc(b.name));c.dataset.i=i;c.onclick=function(){show(b);send({type:'agentSelected',id:i+1})};row.appendChild(c)});
       sec.appendChild(row);list.appendChild(sec)})}
@@ -44,9 +47,9 @@
     var sheet=el('div','ml-sheet');list=el('div','ml-list');
     det=el('div','ml-det','<i>Tap a bot for role, status &amp; current task</i>');
     sheet.appendChild(det);sheet.appendChild(list);
-    sheet.appendChild(el('div','ml-cred','Open-source <a href="https://github.com/thefridgeunpluggedwpg/bot-factory">Bot Factory</a> (MIT). Engine &amp; art: <a href="https://github.com/pablodelucca/pixel-agents">Pixel Agents</a> (MIT). Characters are decorative; statuses &amp; feed come from status.json.'));
+    sheet.appendChild(el('div','ml-cred','Open-source <a class="bf-repo" href="https://github.com/">Bot Factory</a> (MIT). Engine &amp; art: <a href="https://github.com/pablodelucca/pixel-agents">Pixel Agents</a> (MIT). Characters are decorative; statuses &amp; feed come from status.json.'));
     document.body.appendChild(sheet);
-    fetch('./bots.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){D=j;if(j.title)document.title=j.title}).catch(function(){})
+    (MINE?Promise.resolve().then(function(){var o=BF.local();D={title:o.title||'My office',bots:o.bots}}):fetch('./bots.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){D=j;if(j.title)document.title=j.title}).catch(function(){}))
       .then(function(){chips();spawn();return load()});
     setInterval(load,POLL);
     document.addEventListener('visibilitychange',function(){if(!document.hidden)load()});
