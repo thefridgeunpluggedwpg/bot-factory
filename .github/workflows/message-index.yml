@@ -1,0 +1,26 @@
+# Rebuilds messages/index.json whenever a message is added (CLI, a bot, or GitHub's "Create new file").
+name: message-index
+on:
+  push:
+    branches: [main]
+    paths: ['messages/inbox/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: message-index
+  cancel-in-progress: false
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 bin/build-message-index .
+      - name: Commit index if changed
+        run: |
+          git config user.name "message-index"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add messages/index.json
+          git diff --cached --quiet && exit 0
+          git commit -m "messages: rebuild index"
+          for i in 1 2 3; do git pull --rebase -q origin main && git push && exit 0; sleep 5; done; exit 1

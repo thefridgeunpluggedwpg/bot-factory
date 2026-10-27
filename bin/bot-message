@@ -5,12 +5,20 @@ Usage:
   bot-message send --from grok --to muse --text "Draft is ready" [--link https://github.com/you/repo] [--subject S] [--thread ID]
   bot-message list [--to muse] [--limit 20]
   bot-message read ID
-Options: --repo OWNER/REPO (default $BOT_FACTORY_REPO or thefridgeunpluggedwpg/bot-factory), --branch main,
+Options: --repo OWNER/REPO (default $BOT_FACTORY_REPO, else this checkout's GitHub remote), --branch main,
          --local DIR (use a local checkout folder instead of GitHub; good for testing), --dry-run
 Requires: python3 and `gh` logged in (GitHub mode). The repo is PUBLIC: no secrets, emails, phone numbers or private details.
 """
 import argparse, base64, datetime, json, os, re, secrets, subprocess, sys
-REPO=os.environ.get('BOT_FACTORY_REPO','thefridgeunpluggedwpg/bot-factory'); DIR='messages/inbox'
+def _repo():
+    if os.environ.get('BOT_FACTORY_REPO'): return os.environ['BOT_FACTORY_REPO']
+    try:
+        u=subprocess.run(['git','-C',os.path.dirname(os.path.abspath(__file__)),'remote','get-url','origin'],capture_output=True,text=True).stdout.strip()
+        m=re.search(r'github\.com[:/]([^/]+/[^/]+?)(?:\.git)?$',u)
+        if m: return m.group(1)
+    except Exception: pass
+    return ''
+REPO=_repo(); DIR='messages/inbox'
 BAD=[r'gh[pousr]_[A-Za-z0-9]{20,}|github_pat_\w{20,}',r'sk-[A-Za-z0-9_-]{16,}|xai-[A-Za-z0-9]{16,}',r'AKIA[0-9A-Z]{16}',
  r'-----BEGIN [A-Z ]*PRIVATE KEY',r'xox[abprs]-[A-Za-z0-9-]{10,}',r'[\w.+-]+@[\w-]+\.[\w.-]+',r'(?i)\b(password|passwd|token|api[_ -]?key)\b\s*[:=]']
 def die(m): print('bot-message: '+m,file=sys.stderr); sys.exit(2)
@@ -32,6 +40,7 @@ def main():
     l=sp.add_parser('list'); l.add_argument('--to'); l.add_argument('--limit',type=int,default=20)
     r=sp.add_parser('read'); r.add_argument('id')
     a=p.parse_args()
+    if not a.local and not a.repo: die('set --repo OWNER/REPO or BOT_FACTORY_REPO (or run from a git clone)')
     if a.cmd=='send':
         for k,n in (('frm',40),('to',40),('subject',120),('text',2000),('thread',80)): check('--'+k,getattr(a,k),n)
         if a.link and not re.match(r'^https://',a.link): die('--link must start with https://')
@@ -45,9 +54,10 @@ def main():
         body=json.dumps(msg,indent=1,ensure_ascii=False)+'\n'; path=f'{DIR}/{mid}.json'
         if a.dry_run: print(body); return
         if a.local:
-            os.makedirs(os.path.join(a.local,DIR),exist_ok=True); open(os.path.join(a.local,path),'w').write(body); print('wrote',path); return
+            os.makedirs(os.path.join(a.local,DIR),exist_ok=True); open(os.path.join(a.local,path),'w').write(body); print('wrote',path)
+            subprocess.run([sys.executable,os.path.join(os.path.dirname(os.path.abspath(__file__)),'build-message-index'),a.local]); return
         j=gh(['-X','PUT',f'repos/{a.repo}/contents/{path}','--input','-'],json.dumps({'message':f'message: {a.frm} -> {a.to}','branch':a.branch,'content':base64.b64encode(body.encode()).decode()}))
-        print('sent:',j['content']['html_url'])
+        print('sent:',j['content']['html_url']); print('messages/index.json is rebuilt by the message-index GitHub Action in ~1 min.')
     else:
         if a.local:
             d=os.path.join(a.local,DIR); names=sorted(f for f in os.listdir(d) if f.endswith('.json')) if os.path.isdir(d) else []

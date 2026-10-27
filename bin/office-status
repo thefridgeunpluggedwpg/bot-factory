@@ -4,11 +4,19 @@ Usage:
   office-status event --bot NAME --text TEXT [--type info|win|blocked|status]
   office-status bot   --bot NAME|ID [--status STATUS] [--task TEXT] [--event TEXT]
   office-status show
-Options: --repo OWNER/REPO (default $BOT_FACTORY_REPO or thefridgeunpluggedwpg/bot-factory), --branch main,
+Options: --repo OWNER/REPO (default $BOT_FACTORY_REPO, else this checkout's GitHub remote), --branch main,
          --dry-run, --local FILE (edit a local file instead of GitHub; for testing)
 """
 import argparse, base64, json, os, re, subprocess, sys, time, datetime
-REPO=os.environ.get('BOT_FACTORY_REPO','thefridgeunpluggedwpg/bot-factory'); PATH='status.json'; MAX_EVENTS=100
+def _repo():
+    if os.environ.get('BOT_FACTORY_REPO'): return os.environ['BOT_FACTORY_REPO']
+    try:
+        u=subprocess.run(['git','-C',os.path.dirname(os.path.abspath(__file__)),'remote','get-url','origin'],capture_output=True,text=True).stdout.strip()
+        m=re.search(r'github\.com[:/]([^/]+/[^/]+?)(?:\.git)?$',u)
+        if m: return m.group(1)
+    except Exception: pass
+    return ''
+REPO=_repo(); PATH='status.json'; MAX_EVENTS=100
 SECRET=[(r'gh[pousr]_[A-Za-z0-9]{20,}|github_pat_\w{20,}','GitHub token'),(r'sk-[A-Za-z0-9_-]{16,}|xai-[A-Za-z0-9]{16,}','API key'),
  (r'AKIA[0-9A-Z]{16}','AWS key'),(r'-----BEGIN [A-Z ]*PRIVATE KEY','private key'),(r'xox[abprs]-[A-Za-z0-9-]{10,}','Slack token'),
  (r'eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}','JWT'),(r'[\w.+-]+@[\w-]+\.[\w.-]+','email address'),
@@ -72,6 +80,7 @@ def main():
     b=sp.add_parser('bot'); b.add_argument('--bot',required=True); b.add_argument('--status'); b.add_argument('--task'); b.add_argument('--event')
     sp.add_parser('show')
     a=p.parse_args()
+    if not a.local and not a.repo: sys.exit('office-status: set --repo OWNER/REPO or BOT_FACTORY_REPO')
     for k in ('bot','text','status','task','event'): check('--'+k,getattr(a,k,None))
     for i in range(5):
         s,sha=get(a)

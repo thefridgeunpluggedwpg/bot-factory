@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""build-message-index [DIR]: rebuild messages/index.json from messages/inbox/*.json (newest first).
+Skips files that are not valid v1 messages. Used by bin/bot-message --local and .github/workflows/message-index.yml."""
+import json, os, re, sys
+root=sys.argv[1] if len(sys.argv)>1 else os.path.join(os.path.dirname(os.path.abspath(__file__)),'..')
+inbox=os.path.join(root,'messages','inbox'); out=os.path.join(root,'messages','index.json')
+def ok(m,name):
+    if not isinstance(m,dict) or m.get('v')!=1: return False
+    for k,n in (('id',100),('ts',40),('from',40),('to',40)):
+        if not isinstance(m.get(k),str) or not m[k] or len(m[k])>n: return False
+    if m['id']+'.json'!=name: return False
+    t,l=m.get('text') or '',m.get('link') or ''
+    if not isinstance(t,str) or not isinstance(l,str) or len(t)>2000 or len(l)>500 or not (t or l): return False
+    if l and not re.match(r'^https://[^\s<>"]+$',l): return False
+    return all(isinstance(m.get(k,''),str) and len(m.get(k) or '')<=n for k,n in (('subject',120),('thread',80)))
+msgs=[];bad=[]
+for n in sorted(os.listdir(inbox)) if os.path.isdir(inbox) else []:
+    if not n.endswith('.json'): continue
+    try: m=json.load(open(os.path.join(inbox,n),encoding='utf-8'))
+    except Exception: bad.append(n); continue
+    if ok(m,n): msgs.append({k:m[k] for k in ('v','id','ts','from','to','subject','text','link','thread') if m.get(k) not in (None,'')})
+    else: bad.append(n)
+msgs.sort(key=lambda m:(m['ts'],m['id']),reverse=True)
+body=json.dumps({'v':1,'count':len(msgs),'messages':msgs},indent=1,ensure_ascii=False)+'\n'
+old=open(out,encoding='utf-8').read() if os.path.exists(out) else None
+if old!=body: open(out,'w',encoding='utf-8').write(body)
+print(f'index: {len(msgs)} messages'+(f', skipped invalid: {", ".join(bad)}' if bad else '')+('' if old!=body else ' (unchanged)'))
