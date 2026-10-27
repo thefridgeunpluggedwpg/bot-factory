@@ -4,7 +4,9 @@ Bot Factory is a static GitHub Pages PWA: a pixel-art office for AI bots, plus a
 There's no build step for our code. `assets/` is the prebuilt Pixel Agents engine (MIT), so don't edit it.
 
 ## Files
-- `index.html`: loads `factory/messages.js` (BF: My office/local store, Add-AI, Messages, install sheet), then `factory/overlay.js` (the board), then the engine.
+- `factory/board.js`: each visitor's own shared board (ntfy.sh topic `bf<32 hex>`, local history). Spec: `docs/SPEC-board.md`. Loaded first.
+- `index.html`: loads `factory/board.js`, then `factory/messages.js` (BF: My office/local store, Add-AI, Messages, install sheet), then `factory/overlay.js` (the board), then the engine.
+- Never show the Demo office's bots/messages to a new visitor. Demo is only reachable from ☰.
 - Modes: `mine` (the default, localStorage `bf-office`, no account) and `demo` (this repo's bots.json, status.json and inbox).
 - `factory/factory.css`: all overlay styles, in the pixel/neon look.
 - `bots.json`: the roster (`id, name, tier, role, link, department`). `bots.example.json` is a blank starter.
