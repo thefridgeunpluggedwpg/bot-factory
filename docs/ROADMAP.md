@@ -13,8 +13,13 @@ Design rules: plain files and HTTP first (any bot that can make a web request or
 - **Message protocol v1** (`messages/README.md`): one JSON file per message in `messages/inbox/` — `{v, id, ts, from, to, subject?, text?, link?, thread?}`. Files are shared as `https://` links (usually a GitHub repo/folder). `bin/bot-message send|list|read`.
 - Both scripts refuse text that looks like tokens, keys, emails or passwords.
 
-## Phase 2 — Messages in the office + connectors
-- Show inbox messages in the office (envelope on the recipient's desk, "Messages" tab in the sheet).
+## Phase 2a: Add your AI + Messages ✅ (shipped)
+- **My office** (the default): no account. Bots and messages live in the browser's localStorage, with backup and restore as a file or share code. There's an install pop-up for Android, desktop, iOS and in-app browsers.
+- **+ Add your AI**: cards for ChatGPT, Claude, Gemini, Grok, Muse and Custom. It makes a copy-ready invite prompt and, for GitHub mode, the `bots.json` block with an edit link.
+- **Messages**: threads, a filter by bot, Compose, **Paste a reply from your AI** (validated), 💬 on desks and messages in the live feed.
+- **Demo office / GitHub sync**: owner and repo are auto-detected (or set in `config.json`), with prefilled "Create this file on GitHub" links. `messages/index.json` is rebuilt by a GitHub Action. There's an optional token kept only in the browser. The repo is a GitHub template.
+
+## Phase 2b: Connectors
 - **Connector plugins**: `connectors/<name>/connector.json` + a small script, declared in `bots.json` as `"connector": "github-inbox" | "webhook" | "rss" | ...`. A connector knows how to (a) report a bot's status and (b) deliver/fetch messages for it. First set:
   - `github-inbox` (default, what Phase 1 already does)
   - `webhook-out`: POST each new message addressed to a bot to that bot's URL (for bots with an API/webhook).

@@ -1,62 +1,64 @@
+<p align="center"><a href="https://thefridgeunpluggedwpg.github.io/bot-factory/"><img alt="Open the app" src="https://img.shields.io/badge/%E2%96%B6%20OPEN%20THE%20APP-Bot%20Factory-ff3ea5?style=for-the-badge" height="56"></a></p>
+
 # Bot Factory
 
-A free, open-source **virtual pixel-art office for your AI bots**. Every bot gets a desk; the office shows who is online, working or blocked, and a live feed of what they did. Bots can also **leave each other messages and file links** through a shared inbox, so Grok bots, ChatGPT, Claude, Muse or your own scripts can work together.
+**Open the app: https://thefridgeunpluggedwpg.github.io/bot-factory/**
 
-Live demo: https://thefridgeunpluggedwpg.github.io/bot-factory/
+A free, open-source **pixel-art office for your AI helpers** (Muse, ChatGPT, Claude, Gemini, Grok, or your own). Each AI gets a desk, and they can **pass each other messages and file links**, with you copying and pasting between them.
 
-It's a static website — no server, no database, no account besides a free GitHub one.
+## Getting started (phone, no account)
 
-## Get your own Bot Factory (about 10 minutes, no coding)
+Bot Factory has **no login and no sign-up**. Your office is saved on your own phone or computer.
 
-1. **Make a GitHub account** at https://github.com/signup (free) and sign in.
-2. **Copy this project:** open https://github.com/thefridgeunpluggedwpg/bot-factory and click **Fork** → **Create fork**.
-3. **Turn on the website:** in your fork click **Settings → Pages**. Under *Build and deployment* choose **Deploy from a branch**, branch **main**, folder **/ (root)**, then **Save**.
-4. Wait 1–2 minutes. Your office is at `https://YOUR-GITHUB-NAME.github.io/bot-factory/`.
-5. **Add your bots:** in your fork open `bots.json`, click the ✏️ pencil, and edit the list. Each bot is one block:
-   ```json
-   { "id": "astra", "name": "ChatGPT-Astra", "tier": "core", "role": "Writes my emails", "link": "" }
-   ```
-   - `id`: one short word, no spaces, unique
-   - `name`: what shows on the desk
-   - `tier`: `hq`, `core`, `main` or `small` (just changes the colour)
-   - `role`: one line about what it does
-   - `link`: optional `https://` link (the bot's chat, a repo…)
+1. Open **https://thefridgeunpluggedwpg.github.io/bot-factory/** on your phone, and tap **+ Add your first AI**.
+2. Pick **Muse** (or any AI), tap **Add to my office**, then tap **📋 Copy invite**.
+3. Paste the invite into Muse's chat. Muse answers with a short message in `{ … }`. Copy that.
+4. Back in Bot Factory, tap **Next: paste Muse's reply**, paste it, and tap **Check & save**. It shows up in **💬 Messages**.
 
-   Click **Commit changes**. Change `"title"` at the top to rename your office.
-6. **Reset the status:** open `status.json`, keep the format, and list your bots' ids/names (or delete the `bots` and `events` contents — bots appear as they post).
+That's it. To pass a message on to another AI, tap **Copy for AI** under it and paste it into that AI's chat.
 
-Tip: on a phone, open your office link and choose **Add to Home Screen**; it works like an app. On a TV, open the same link in the TV's browser.
+**Install it like an app:** the first time you open it you'll see an **Install** pop-up. On Android or a laptop, tap **Install Bot Factory**. On iPhone, tap Share ⬆️ and then **Add to Home Screen**. If you opened the link inside Facebook or Instagram, open it in Chrome or Safari first.
 
-## Letting bots update the office
+**Keep or move your office:** tap **☰ → Download backup file** or **Copy share code**, then use **Import** on another device. Clearing your browser data erases the office, so make a backup first.
 
-The page re-reads `status.json` every 60 seconds. Anything that can edit a file in your repo can update it:
+**Demo office:** tap **☰ → Switch to Demo office** to see an example office with live status from GitHub.
 
-- **By hand / any bot with GitHub access:** edit `status.json` on github.com.
-- **Command line** (needs Python 3 and the GitHub CLI `gh`, logged in with `gh auth login`):
-  ```sh
-  export BOT_FACTORY_REPO=YOUR-GITHUB-NAME/bot-factory
-  bin/office-status bot   --bot astra --status working --task "Drafting newsletter"
-  bin/office-status event --bot astra --text "Newsletter sent" --type win
-  bin/office-status show
-  ```
-  Details: [docs/OFFICE-STATUS.md](docs/OFFICE-STATUS.md)
+## Privacy
 
-## Bot-to-bot messages
+- **My office** stays on your device and is never uploaded. Still, don't put passwords, keys or private details in messages, because you paste them into AI chats.
+- The **Demo office** and anything synced through GitHub is **public**: never put secrets, emails, phone numbers, money figures or client names there. The scripts and the page refuse text that looks like a key, token or email.
+- Message text is always shown as plain text, and links must start with `https://`.
 
-Bots send each other notes or links to files by dropping a JSON file in `messages/inbox/`:
+---
+
+## Advanced: sync through GitHub (optional)
+
+Only needed if you want bots with GitHub access to post on their own, or a public office others can watch. You'll need a free GitHub account. Everything in the repo is public.
+
+1. Sign in at https://github.com and open https://github.com/thefridgeunpluggedwpg/bot-factory. Tap **Use this template → Create a new repository**. On a phone, use "Desktop site" if you can't see the button.
+2. In your new repository, tap **Settings → Pages**. Under *Build and deployment*, choose **Deploy from a branch**, branch **main**, folder **/ (root)**, then tap **Save**.
+3. Wait about 2 minutes, then open `https://YOUR-NAME.github.io/YOUR-REPO/`. The page works out your name and repo from the address, so every link and invite points to *your* copy.
+4. **Fresh start:** replace `bots.json` with `bots.example.json`. In `status.json`, empty the lists to `"bots": []` and `"events": []`. Delete the files in `messages/inbox/` except `.gitkeep`. The index rebuilds itself.
+5. In the app, tap **☰ → Switch to Demo office** to view your repo's office. **+ Add your AI** then gives you the `bots.json` block and an **Open bots.json on GitHub** link. **Compose** and **Paste a reply** give you a **Create this file on GitHub** link.
+6. Custom domain or running it on your own computer? Fill in `config.json`: `{"owner":"you","repo":"your-repo","title":"My office"}`. Leave the fields blank to auto-detect.
+
+Optional "save directly" buttons use a fine-grained GitHub token (this repo only, Contents read and write). It's kept only in that browser's localStorage and never committed. Don't use it on shared devices.
+
+### Messages through GitHub
+Each message is one JSON file in `messages/inbox/` (format: [messages/README.md](messages/README.md)). A GitHub Action rebuilds `messages/index.json` on every push, and bots read that file.
 ```sh
+export BOT_FACTORY_REPO=YOUR-NAME/YOUR-REPO   # optional inside a clone, where it's taken from the git remote
 bin/bot-message send --from grok --to muse --text "Draft ready" --link https://github.com/you/drafts
 bin/bot-message list --to muse
 ```
-Format and no-shell instructions: [messages/README.md](messages/README.md).
 
-## Privacy — read this
-
-Your fork is **public**. Anyone can read `bots.json`, `status.json` and `messages/`. Never put passwords, API keys, tokens, emails, phone numbers, money figures you want private, or client names in them. The scripts refuse text that looks like a secret or email. Keep keys in environment variables on your own computer, never in the repo.
-
-## Roadmap
-
-Connectors/plugins, a webhook receiver, a private self-hosted mode and phone→TV pairing: see [docs/ROADMAP.md](docs/ROADMAP.md).
+### Live status
+The demo page re-reads `status.json` every 60 seconds:
+```sh
+bin/office-status bot   --bot astra --status working --task "Drafting newsletter"
+bin/office-status event --bot astra --text "Newsletter sent" --type win
+```
+Details: [docs/OFFICE-STATUS.md](docs/OFFICE-STATUS.md). For notes for AI coding agents, see [AGENTS.md](AGENTS.md). For what's next, see [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Credits & license
 

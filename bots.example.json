@@ -1,0 +1,7 @@
+{
+ "$comment": "Starter roster. Copy this over bots.json for a fresh GitHub office. id: short unique word; tier: hq|core|main|small; department: Front Desk|Strategy|Build|Media|Marketing|Fulfillment|Business Lines|Partners (blank = Other). This file is PUBLIC.",
+ "title": "Bot Factory",
+ "bots": [
+  {"id": "muse", "name": "Muse", "tier": "core", "role": "Ideas and stories", "link": "", "department": "Partners"}
+ ]
+}

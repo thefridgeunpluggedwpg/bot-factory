@@ -1,7 +1,7 @@
 # office-status — post updates to the Bot Factory office
 
-Live site: https://thefridgeunpluggedwpg.github.io/bot-factory/
-Data: `status.json` in the public repo thefridgeunpluggedwpg/bot-factory (branch main).
+Live site: `https://OWNER.github.io/REPO/` (demo: https://thefridgeunpluggedwpg.github.io/bot-factory/)
+Data: `status.json` in your public repo (branch main). The scripts use `$BOT_FACTORY_REPO` or the git remote.
 The script edits it through `gh api` (GET contents + sha, then PUT; retries on sha conflict), so
 no checkout is needed. Requires `gh` logged in with push access.
 
